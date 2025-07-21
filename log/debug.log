@@ -1,0 +1,296 @@
+Location: Prague
+Error: 
+#0 C:\xampp\htdocs\nette-weather-api\vendor\nette\application\src\Application\UI\Presenter.php(677): Nette\Application\UI\Presenter->terminate()
+#1 C:\xampp\htdocs\nette-weather-api\app\Presentation\ApiPresenter.php(74): Nette\Application\UI\Presenter->sendResponse(Object(Nette\Application\Responses\JsonResponse))
+#2 C:\xampp\htdocs\nette-weather-api\app\Presentation\ApiPresenter.php(36): App\Presentation\ApiPresenter->sendSuccessResponse(Array)
+#3 [internal function]: App\Presentation\ApiPresenter->actionCurrent('Prague')
+#4 C:\xampp\htdocs\nette-weather-api\vendor\nette\application\src\Application\UI\Component.php(120): ReflectionMethod->invokeArgs(Object(App\Presentation\ApiPresenter), Array)
+#5 C:\xampp\htdocs\nette-weather-api\vendor\nette\application\src\Application\UI\Presenter.php(203): Nette\Application\UI\Component->tryCall('actionCurrent', Array)
+#6 C:\xampp\htdocs\nette-weather-api\vendor\nette\application\src\Application\Application.php(150): Nette\Application\UI\Presenter->run(Object(Nette\Application\Request))
+#7 C:\xampp\htdocs\nette-weather-api\vendor\nette\application\src\Application\Application.php(76): Nette\Application\Application->processRequest(Object(Nette\Application\Request))
+#8 C:\xampp\htdocs\nette-weather-api\www\index.php(10): Nette\Application\Application->run()
+#9 {main}
+Location: Prague
+Location: Prague
+Getting weather for: Prague
+API Key: OK
+Data from getCurrentWeather: Array
+(
+    [queryCost] => 1
+    [latitude] => 50.0791
+    [longitude] => 14.433
+    [resolvedAddress] => Praha, Hlavní město Praha, Česká Republika
+    [address] => Prague
+    [timezone] => Europe/Prague
+    [tzoffset] => 2
+    [days] => Array
+        (
+            [0] => Array
+                (
+                    [datetime] => 2025-07-18
+                    [datetimeEpoch] => 1752789600
+                    [tempmax] => 22.7
+                    [tempmin] => 14.6
+                    [temp] => 18.4
+                    [feelslikemax] => 22.7
+                    [feelslikemin] => 14.6
+                    [feelslike] => 18.4
+                    [dew] => 14.9
+                    [humidity] => 81
+                    [precip] => 4.6
+                    [precipprob] => 100
+                    [precipcover] => 29.17
+                    [preciptype] => Array
+                        (
+                            [0] => rain
+                        )
+
+                    [snow] => 0
+                    [snowdepth] => 0
+                    [windgust] => 30.2
+                    [windspeed] => 18.6
+                    [winddir] => 287.6
+                    [pressure] => 1013
+                    [cloudcover] => 71.7
+                    [visibility] => 13.9
+                    [solarradiation] => 201.8
+                    [solarenergy] => 17.3
+                    [uvindex] => 7
+                    [severerisk] => 10
+                    [sunrise] => 05:13:09
+                    [sunriseEpoch] => 1752808389
+                    [sunset] => 21:03:21
+                    [sunsetEpoch] => 1752865401
+                    [moonphase] => 0.75
+                    [conditions] => Rain, Partially cloudy
+                    [description] => Partly cloudy throughout the day with a chance of rain throughout the day.
+                    [icon] => rain
+                    [stations] => Array
+                        (
+                            [0] => LKCV
+                            [1] => LKPR
+                            [2] => D5785
+                            [3] => LKKB
+                            [4] => LKVO
+                        )
+
+                    [source] => comb
+                )
+
+        )
+
+    [stations] => Array
+        (
+            [LKCV] => Array
+                (
+                    [distance] => 69759
+                    [latitude] => 49.93
+                    [longitude] => 15.38
+                    [useCount] => 0
+                    [id] => LKCV
+                    [name] => LKCV
+                    [quality] => 50
+                    [contribution] => 0
+                )
+
+            [LKPR] => Array
+                (
+                    [distance] => 11172
+                    [latitude] => 50.1
+                    [longitude] => 14.28
+                    [useCount] => 0
+                    [id] => LKPR
+                    [name] => LKPR
+                    [quality] => 50
+                    [contribution] => 0
+                )
+
+            [LKVO] => Array
+                (
+                    [distance] => 14761
+                    [latitude] => 50.21
+                    [longitude] => 14.4
+                    [useCount] => 0
+                    [id] => LKVO
+                    [name] => LKVO
+                    [quality] => 11
+                    [contribution] => 0
+                )
+
+            [D5785] => Array
+                (
+                    [distance] => 2859
+                    [latitude] => 50.08
+                    [longitude] => 14.393
+                    [useCount] => 0
+                    [id] => D5785
+                    [name] => DW5785 Prague CZ
+                    [quality] => 0
+                    [contribution] => 0
+                )
+
+            [LKKB] => Array
+                (
+                    [distance] => 8289
+                    [latitude] => 50.12
+                    [longitude] => 14.53
+                    [useCount] => 0
+                    [id] => LKKB
+                    [name] => LKKB
+                    [quality] => 50
+                    [contribution] => 0
+                )
+
+        )
+
+)
+
+Error in sendSuccesssResponse: 
+#0 C:\xampp\htdocs\nette-weather-api\vendor\nette\application\src\Application\UI\Presenter.php(677): Nette\Application\UI\Presenter->terminate()
+#1 C:\xampp\htdocs\nette-weather-api\app\Presentation\ApiPresenter.php(103): Nette\Application\UI\Presenter->sendResponse(Object(Nette\Application\Responses\JsonResponse))
+#2 C:\xampp\htdocs\nette-weather-api\app\Presentation\ApiPresenter.php(42): App\Presentation\ApiPresenter->sendSuccessResponse(Array)
+#3 [internal function]: App\Presentation\ApiPresenter->actionCurrent('Prague')
+#4 C:\xampp\htdocs\nette-weather-api\vendor\nette\application\src\Application\UI\Component.php(120): ReflectionMethod->invokeArgs(Object(App\Presentation\ApiPresenter), Array)
+#5 C:\xampp\htdocs\nette-weather-api\vendor\nette\application\src\Application\UI\Presenter.php(203): Nette\Application\UI\Component->tryCall('actionCurrent', Array)
+#6 C:\xampp\htdocs\nette-weather-api\vendor\nette\application\src\Application\Application.php(150): Nette\Application\UI\Presenter->run(Object(Nette\Application\Request))
+#7 C:\xampp\htdocs\nette-weather-api\vendor\nette\application\src\Application\Application.php(76): Nette\Application\Application->processRequest(Object(Nette\Application\Request))
+#8 C:\xampp\htdocs\nette-weather-api\www\index.php(10): Nette\Application\Application->run()
+#9 {main}
+Location: Prague
+Getting weather for: Prague
+API Key: OK
+Data from getCurrentWeather: Array
+(
+    [queryCost] => 1
+    [latitude] => 50.0791
+    [longitude] => 14.433
+    [resolvedAddress] => Praha, Hlavní město Praha, Česká Republika
+    [address] => Prague
+    [timezone] => Europe/Prague
+    [tzoffset] => 2
+    [days] => Array
+        (
+            [0] => Array
+                (
+                    [datetime] => 2025-07-18
+                    [datetimeEpoch] => 1752789600
+                    [tempmax] => 22.7
+                    [tempmin] => 14.6
+                    [temp] => 18.4
+                    [feelslikemax] => 22.7
+                    [feelslikemin] => 14.6
+                    [feelslike] => 18.4
+                    [dew] => 14.9
+                    [humidity] => 81
+                    [precip] => 4.6
+                    [precipprob] => 100
+                    [precipcover] => 29.17
+                    [preciptype] => Array
+                        (
+                            [0] => rain
+                        )
+
+                    [snow] => 0
+                    [snowdepth] => 0
+                    [windgust] => 30.2
+                    [windspeed] => 18.6
+                    [winddir] => 287.6
+                    [pressure] => 1013
+                    [cloudcover] => 71.7
+                    [visibility] => 13.9
+                    [solarradiation] => 201.8
+                    [solarenergy] => 17.3
+                    [uvindex] => 7
+                    [severerisk] => 10
+                    [sunrise] => 05:13:09
+                    [sunriseEpoch] => 1752808389
+                    [sunset] => 21:03:21
+                    [sunsetEpoch] => 1752865401
+                    [moonphase] => 0.75
+                    [conditions] => Rain, Partially cloudy
+                    [description] => Partly cloudy throughout the day with a chance of rain throughout the day.
+                    [icon] => rain
+                    [stations] => Array
+                        (
+                            [0] => LKCV
+                            [1] => LKPR
+                            [2] => D5785
+                            [3] => LKKB
+                            [4] => LKVO
+                        )
+
+                    [source] => comb
+                )
+
+        )
+
+    [stations] => Array
+        (
+            [LKCV] => Array
+                (
+                    [distance] => 69759
+                    [latitude] => 49.93
+                    [longitude] => 15.38
+                    [useCount] => 0
+                    [id] => LKCV
+                    [name] => LKCV
+                    [quality] => 50
+                    [contribution] => 0
+                )
+
+            [LKPR] => Array
+                (
+                    [distance] => 11172
+                    [latitude] => 50.1
+                    [longitude] => 14.28
+                    [useCount] => 0
+                    [id] => LKPR
+                    [name] => LKPR
+                    [quality] => 50
+                    [contribution] => 0
+                )
+
+            [LKVO] => Array
+                (
+                    [distance] => 14761
+                    [latitude] => 50.21
+                    [longitude] => 14.4
+                    [useCount] => 0
+                    [id] => LKVO
+                    [name] => LKVO
+                    [quality] => 11
+                    [contribution] => 0
+                )
+
+            [D5785] => Array
+                (
+                    [distance] => 2859
+                    [latitude] => 50.08
+                    [longitude] => 14.393
+                    [useCount] => 0
+                    [id] => D5785
+                    [name] => DW5785 Prague CZ
+                    [quality] => 0
+                    [contribution] => 0
+                )
+
+            [LKKB] => Array
+                (
+                    [distance] => 8289
+                    [latitude] => 50.12
+                    [longitude] => 14.53
+                    [useCount] => 0
+                    [id] => LKKB
+                    [name] => LKKB
+                    [quality] => 50
+                    [contribution] => 0
+                )
+
+        )
+
+)
+
+Getting weather for: Prague
+API Key: OK
+Getting weather for: Prague
+API Key: OK

@@ -1,0 +1,36 @@
+# Nette
+vendor/
+temp/
+log/
+
+# Enviroment configurace
+.env
+.env.local
+.env.production
+config/local.neon
+
+# Development A Debug
+test-*.php
+debug-*.php
+.log
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node.js (do budoucna)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Backup files
+*.bak
+*.backup
+*~
