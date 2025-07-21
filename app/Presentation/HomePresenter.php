@@ -42,6 +42,18 @@ final class HomePresenter extends Presenter
             ]
         ];
 
+        $this->template->rateLimit = [
+            'limit' => 60,
+            'window' => '1 minute',
+            'identification' => 'by IP address',
+            'headers' => [
+                'X-RateLimit-Limit' => 'Maximum number of requests allowed',
+                'X-RateLimit-Remaining' => 'Number of requests left for the time window',
+                'X-RateLimit-Reset' => 'The time at which the current rate limit window resets in UTC epoch seconds',
+                'Retry-After' => 'Seconds to wait before making a new request (only present when rate limit is exceeded)'
+            ]
+        ];
+
         $this->template->endpoints = [
             [
                 'name' => 'Current Weather',

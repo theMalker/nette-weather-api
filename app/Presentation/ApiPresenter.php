@@ -8,22 +8,34 @@ namespace App\Presentation;
 
 use App\Model\WeatherFormatter;
 use App\Model\WeatherService;
+use App\Model\RateLimiter;
 use Nette\Application\UI\Presenter;
 
 
 final class ApiPresenter extends Presenter
 {
+
+    use ApiResponseTrait;
+
+    /**
+     * Konstanty RateLimiteru
+     */
+    private const RATE_LIMIT = 60;  // 60 požadavku
+    private const RATE_WINDOW = 60; // na 60s (1 minuta)
+
     private WeatherService $weatherService;
     private WeatherFormatter $formatter;
-    use ApiResponseTrait;
+    private RateLimiter $rateLimiter;
 
     public function __construct(
         WeatherService $weatherService,
-        WeatherFormatter $formatter
+        WeatherFormatter $formatter,
+        RateLimiter $rateLimiter
     ) {
         parent::__construct();
         $this->weatherService = $weatherService;
         $this->formatter = $formatter;
+        $this->rateLimiter = $rateLimiter;
     }
 
     protected function startup(): void
@@ -32,6 +44,24 @@ final class ApiPresenter extends Presenter
 
         //CORS hlavičky pro API
         $this->setCorsHeaders();
+
+        // Při startu získáme IP a kontrolujeme limity
+        $clientIp = $this->getHttpRequest()->getRemoteAddress();
+        $isAllowed = $this->rateLimiter->check($clientIp, self::RATE_LIMIT, self::RATE_WINDOW);
+
+        // Doplnění hlavičky s rateLimit info
+        $rateLimitInfo = $this->rateLimiter->getInfo($clientIp, self::RATE_LIMIT, self::RATE_WINDOW);
+        $this->getHttpResponse()->addHeader('X-RateLimit-Limit', (string) $rateLimitInfo['limit']);
+        $this->getHttpResponse()->addHeader('X-RateLimit-Remaining', (string) $rateLimitInfo['remaining']);
+        $this->getHttpResponse()->addHeader('X-RateLimit-Reset', (string) $rateLimitInfo['reset']);
+
+        // Při překročení limitu vracíme chybu 429 - Too Many Requests
+        if (!$isAllowed) {
+            $retryAfter = max(1, $rateLimitInfo['reset'] - time());
+            $this->getHttpResponse()->addHeader('Retry-After', (string) $retryAfter);
+            $this->apiResponse->sendError('Rate limit exceeded. Try again later.', 429);
+        }
+
     }
 
     /**
