@@ -1,15 +1,40 @@
 {block content}
     <div class="container my-5">
         <h1>{$title}</h1>
-        <p class="lead">A simple wrapper for Visual Crossing Weather API built with Nette Framework.</p>
+        <p class="lead">{$apiInfo['description']}</p>
+        <p>This API is powered by <a href="{$apiInfo['source_url']}" target="_blank">{$apiInfo['source']}</a>.</p>
 
+        <!-- API Parameters -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h2 class="h4 mb-0">API Parameters</h2>
+            </div>
+            <div class="card-body">
+                {foreach $parameters as $paramName => $paramInfo}
+                    <div class="mb-4">
+                        <h3 class="h5">{$paramName}</h3>
+                        <p>{$paramInfo['description']}</p>
+
+                        <h4 class="h6">Possible Values</h4>
+                        <ul>
+                            {foreach $paramInfo['values'] as $value => $desc}
+                                <li><code>{$value}</code> - {$desc}{if $value == $paramInfo['default']} <span class="badge bg-secondary">Default</span>{/if}</li>
+                            {/foreach}
+                        </ul>
+                    </div>
+                    {if !$iterator->isLast()}<hr>{/if}
+                {/foreach}
+            </div>
+        </div>
+
+        <!-- API Endpoints -->
         <div class="card mt-4">
             <div class="card-header">
                 <h2 class="h4 mb-0">API Endpoints</h2>
             </div>
             <div class="card-body">
                 {foreach $endpoints as $endpoint}
-                    <div class="mb-4">
+                    <div class="mb-5">
                         <h3 class="h5">{$endpoint['name']}</h3>
                         <div class="d-flex align-items-center mb-2">
                             <span class="badge bg-primary me-2">{$endpoint['method']}</span>
@@ -19,41 +44,57 @@
 
                         <h4 class="h6">Parameters</h4>
                         <ul>
-                            {foreach $endpoint['parameters'] as $param => $desc}
-                                <li><strong>{$param}</strong> - {$desc}</li>
+                            {foreach $endpoint['parameters'] as $paramName => $paramDesc}
+                                <li><strong>{$paramName}</strong> - {$paramDesc}</li>
                             {/foreach}
                         </ul>
 
-                        <h4 class="h6">Example</h4>
-                        <div class="d-flex align-items-center">
-                            <code>{$baseUrl}{$endpoint['example']}</code>
-                            <a href="{$endpoint['example']}" class="btn btn-sm btn-outline-primary ms-3" target="_blank">Try it</a>
+                        <h4 class="h6">Example Requests</h4>
+                        <div class="list-group mb-3">
+                            {foreach $endpoint['examples'] as $exampleTitle => $exampleUrl}
+                                <div class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <strong>{$exampleTitle}:</strong>
+                                            <code>{$baseUrl}{$exampleUrl}</code>
+                                        </div>
+                                        <a href="{$exampleUrl}" class="btn btn-sm btn-outline-primary ms-3" target="_blank">Try it</a>
+                                    </div>
+                                </div>
+                            {/foreach}
                         </div>
+
+                        <h4 class="h6">Example Response</h4>
+                        <pre class="bg-light p-3 rounded"><code>{json_encode($endpoint['response_example'], JSON_PRETTY_PRINT)}</code></pre>
                     </div>
                     {if !$iterator->isLast()}<hr>{/if}
                 {/foreach}
             </div>
         </div>
 
+        <!-- Response Format -->
         <div class="card mt-4">
             <div class="card-header">
                 <h2 class="h4 mb-0">Response Format</h2>
             </div>
             <div class="card-body">
                 <p>All API responses follow this standard format:</p>
-                <pre><code>{
+                <pre class="bg-light p-3 rounded"><code>{
     "status": "success",
     "message": "Success",
     "data": { ... }
 }</code></pre>
                 <p>In case of errors:</p>
-                <pre><code>{
+                <pre class="bg-light p-3 rounded"><code>{
     "status": "error",
     "message": "Error description"
 }</code></pre>
             </div>
         </div>
-    </div>
 
+        <footer class="mt-5 text-center text-muted">
+            <p>Weather API Wrapper v{$apiInfo['version']} - {date('Y')}</p>
+        </footer>
+    </div>
 
 {/block}

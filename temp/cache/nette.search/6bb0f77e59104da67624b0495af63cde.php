@@ -12,10 +12,15 @@ return array (
       0 => 'C:\\xampp\\htdocs\\nette-weather-api\\app\\Core\\RouterFactory.php',
       1 => 1752848040,
     ),
+    'App\\Model\\WeatherFormatter' => 
+    array (
+      0 => 'C:\\xampp\\htdocs\\nette-weather-api\\app\\Model\\WeatherFormatter.php',
+      1 => 1753098718,
+    ),
     'App\\Model\\WeatherService' => 
     array (
       0 => 'C:\\xampp\\htdocs\\nette-weather-api\\app\\Model\\WeatherService.php',
-      1 => 1752851723,
+      1 => 1753101285,
     ),
     'App\\Presentation\\Accessory\\LatteExtension' => 
     array (
@@ -25,7 +30,7 @@ return array (
     'App\\Presentation\\ApiPresenter' => 
     array (
       0 => 'C:\\xampp\\htdocs\\nette-weather-api\\app\\Presentation\\ApiPresenter.php',
-      1 => 1753087924,
+      1 => 1753102302,
     ),
     'App\\Presentation\\ApiResponse' => 
     array (
@@ -50,7 +55,7 @@ return array (
     'App\\Presentation\\HomePresenter' => 
     array (
       0 => 'C:\\xampp\\htdocs\\nette-weather-api\\app\\Presentation\\HomePresenter.php',
-      1 => 1753090232,
+      1 => 1753102861,
     ),
   ),
   1 => 

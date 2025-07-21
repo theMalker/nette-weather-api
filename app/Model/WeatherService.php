@@ -25,54 +25,73 @@ class WeatherService
     }
 
     /**
-     * Získá současné počasí pro $location
+     * Získá současné počasí pro $location s možnostmi
      *
-     * @param string $location
-     *
+     * @param string $location Lokace (město, PSČ, souřadnice...)
+     * @param array $options Doplnující možnosti pro API dotazy
      * @return array
      */
-    public function getCurrentWeather(string $location): array
+    public function getCurrentWeather(string $location, array $options = []): array
     {
-        try {
-            $cacheKey = md5($location);
+        // výchozí možnosti
+        $defaultOptions = [
+            'unitGroup' => 'metric',    // metric/us/uk
+            'lang' => 'en',             // jazyk popisů
+            'include' => 'days',        // která data zahrnout
+        ];
 
-            file_put_contents(__DIR__ . '/../../log/debug.log',
-                "Getting weather for: $location\n" .
-                "API Key: " . (empty($this->apiKey) ? 'EMPTY!' : 'OK') . "\n",
-                FILE_APPEND);
+        // sloučení výchozích options a uživatelských options (uživatelské mají přednost)
+        $mergedOption = array_merge($defaultOptions, $options);
 
-            if ($this->cache !== null) {
-                $data = $this->cache->load($cacheKey);
-                if ($data !== null) {
-                    return $data;
-                }
+        // Vytvoří klíče pro cache, zahrnuje všechny parametry
+        $cacheKey = md5($location . serialize($mergedOption));
+
+        // Pokus o načtění z cache
+        if ($this->cache !== null) {
+            $data = $this->cache->load($cacheKey);
+            if ($data !== null) {
+                return $data;
             }
-
-            $url = self::BASE_URL . urlencode($location) . '/today';
-            $response = $this->makeRequest($url);
-
-            if ($this->cache !== null) {
-                $dependencies = [
-                    Cache::Expire => '30 minutes',
-                ];
-                $this->cache->save($cacheKey, $response, $dependencies);
-            }
-
-            return $response;
-        } catch (\Exception $e) {
-            file_put_contents(__DIR__ . '/../log/debug.log',
-                "Error in getCurrentWeather: " . $e->getMessage() . "\n" .
-                $e->getTraceAsString() . "\n",
-                FILE_APPEND);
-
-            throw  $e; // preposli vyjimku
         }
+
+        // Sestavení URL s lokací
+        $url = self::BASE_URL . urlencode($location) . '/today';
+
+        // Volání API, ted i s možnostmi
+        $response = $this->makeRequest($url, $mergedOption);
+
+        // Uložení do cache, pokud je dostupná
+        if ($this->cache !== null) {
+            $dependencies = [
+                Cache::Expire => '30 minutes',
+            ];
+            $this->cache->save($cacheKey, $response, $dependencies);
+        }
+
+        return $response;
     }
 
-
-    public function getForecast(string $location, int $days = 5): array
+    /**
+     * Získání předpovědi pro lokaci včetně možností
+     *
+     * @param string $location Lokace (město, PSČ, souřadnice ...)
+     * @param int $days Počet dní pro předpověď
+     * @param array $options Doplňující nastavení
+     * @return array
+     */
+    public function getForecast(string $location, int $days = 5, array $options = []): array
     {
-        $cacheKey = md5($location . '_' . $days);
+        $defaultOptions =[
+            'unitGroup' => 'metric',    // metric/us/uk
+            'lang' => 'en',             // jazyk popisů
+            'include' => 'days',        // která data zahrnout
+        ];
+
+        // Sloučí výchozí a uživatelem zadané možnosti
+        $mergedOptions = array_merge($defaultOptions, $options);
+
+        // Vytvoří klíč pro cache
+        $cacheKey = md5($location . '_' . $days . serialize($mergedOptions));
 
         // naber z cache, pokud to jde
         if ($this->cache !== null) {
@@ -85,7 +104,9 @@ class WeatherService
         // podle dokumentace https://www.visualcrossing.com/resources/documentation/weather-api/using-the-time-period-parameter-to-specify-dynamic-dates-for-weather-api-requests/
         // použijeme nextXdays
         $url = self::BASE_URL . urlencode($location) . '/next' . $days . 'days';
-        $response = $this->makeRequest($url);
+
+        // Volání API + ted s možnostmi
+        $response = $this->makeRequest($url, $mergedOptions);
 
         // ulozi do cache pokud ji ma
         if ($this->cache !== null) {
@@ -98,20 +119,42 @@ class WeatherService
         return $response;
     }
 
-    private function makeRequest(string $url): array
+    /**
+     * @param string $url       API endpoint url
+     * @param array $options    Možnosti požadavku
+     * @return array
+     * @throws \Exception
+     */
+    private function makeRequest(string $url, array $options = []): array
     {
-        $params = [
-            'query' => [
-                'key' => $this->apiKey,
-                'unitGroup' => 'metric',    // Metrické jednotky (teploty v celsiu atd.
-                'include' => 'days',        // Zahrnout do odpovědi denní data
-                'contentType' => 'json',    // Formát odpovědi
-            ],
-        ];
+        try {
+            $params = [
+                'query' => array_merge([
+                    'key' => $this->apiKey,     // API klíč
+                    'contentType' => 'json',    // Formát odpovědi - JSON
+                ], $options),   // přidání uživ. možností (tam jsou dny, jednotky)
+            ];
 
-        $response = $this->httpClient->get($url, $params);
-        $data = Json::decode((string) $response->getBody(), forceArrays: true);
+            // Provede HTTP požadavek
+            $response = $this->httpClient->get($url, $params);
 
-        return $data;
+            // Dekoduj JSON odpověd
+            $data = Json::decode((string) $response->getBody(), forceArrays: true);
+
+            return $data;
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+            // Zachyceni a zpracování chyb HTTP požadavku
+            if ($e->hasResponse()) {
+                $statusCode = $e->getResponse()->getStatusCode();
+                $errorBody = (string) $e->getResponse()->getBody();
+
+                throw new \Exception("API request failed with status code $statusCode: $errorBody", $statusCode);
+            }
+
+            throw new \Exception("API request failed: " . $e->getMessage(), 500);
+        } catch (\Exception $e) {
+            // Zachycení obecných chyb
+            throw new \Exception("Failed to process API response: " .$e->getMessage(), 500);
+        }
     }
 }

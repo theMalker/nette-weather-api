@@ -6,6 +6,7 @@ namespace App\Presentation;
 
 
 
+use App\Model\WeatherFormatter;
 use App\Model\WeatherService;
 use Nette\Application\UI\Presenter;
 
@@ -13,12 +14,16 @@ use Nette\Application\UI\Presenter;
 final class ApiPresenter extends Presenter
 {
     private WeatherService $weatherService;
+    private WeatherFormatter $formatter;
     use ApiResponseTrait;
 
-    public function __construct(WeatherService $weatherService)
-    {
+    public function __construct(
+        WeatherService $weatherService,
+        WeatherFormatter $formatter
+    ) {
         parent::__construct();
         $this->weatherService = $weatherService;
+        $this->formatter = $formatter;
     }
 
     protected function startup(): void
@@ -32,18 +37,38 @@ final class ApiPresenter extends Presenter
     /**
      * API endpoint pro aktuální počasí
      *
-     * @param string $location Lokace (město, PSČ, souřadnice ..)
+     * @param string $location  Lokace (město, PSČ, souřadnice ..)
+     * @param string $units     Jednotky (metric/us/uk)
+     * @param string $lang      Jazyk (default en)
      * @return void
      */
-    public function actionCurrent(string $location): void
+    public function actionCurrent(string $location, string $units = 'metric', string $lang = 'en'): void
     {
         try {
             if (empty($location)) {
                 $this->apiResponse->sendError('Location parameter is required', 400);
             }
 
-            $data = $this->weatherService->getCurrentWeather($location);
-            $this->apiResponse->sendSuccess($data);
+            // Validace jednotek
+            $validUnits = ['metric', 'us', 'uk'];
+            if (!in_array($units, $validUnits)) {
+                $this->apiResponse->sendError('Invalid units. Valid values: ' . implode(', ', $validUnits), 400);
+            }
+
+            // Seskupíme options pro API request
+            $options = [
+                'unitGroup' => $units,
+                'lang' => $lang,
+            ];
+
+            // Volání služby + options
+            $data = $this->weatherService->getCurrentWeather($location, $options);
+
+            // Formátování odpovědi
+            $formattedData = $this->formatter->formatCurrentWeather($data);
+
+            // Odešle odpověd
+            $this->apiResponse->sendSuccess($formattedData);
         } catch (\Exception $e) {
             $this->apiResponse->sendError($e->getMessage());
         }

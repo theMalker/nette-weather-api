@@ -2,6 +2,7 @@ services:
     - App\Core\RouterFactory::createRouter
     # Weather service API s injektovaným klíčem a cache storage
     - App\Model\WeatherService(%env.VISUALCROSSING_API_KEY%, @cache.storage)
+    - App\Model\WeatherFormatter
     - App\Presentation\ApiResponse
 
 
