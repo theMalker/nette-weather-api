@@ -5,6 +5,7 @@ services:
     - App\Model\WeatherFormatter
     - App\Model\RateLimiter
     - App\Presentation\ApiResponse
+    - App\Presentation\ApiLogger(%logDir%)
 
 
 search:

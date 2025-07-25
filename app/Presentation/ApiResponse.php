@@ -72,19 +72,4 @@ class ApiResponse
         ];
         $this->sendAsJson($response);
     }
-
-    /**
-     * Metoda pro zpracování dat z požadavku
-     *
-     * @return array
-     */
-    public function getJsonInput(): array
-    {
-        $input = file_get_contents('php://input');
-        $decoded = json_decode($input, true);
-        if ($input && $decoded === null) {
-            $this->sendError('Invalid JSON format', 400);
-        }
-        return $decoded ?: [];
-    }
 }

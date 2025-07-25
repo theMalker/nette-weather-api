@@ -12,6 +12,11 @@ return array (
       0 => 'C:\\xampp\\htdocs\\nette-weather-api\\app\\Core\\RouterFactory.php',
       1 => 1752848040,
     ),
+    'App\\Model\\RateLimiter' => 
+    array (
+      0 => 'C:\\xampp\\htdocs\\nette-weather-api\\app\\Model\\RateLimiter.php',
+      1 => 1753105934,
+    ),
     'App\\Model\\WeatherFormatter' => 
     array (
       0 => 'C:\\xampp\\htdocs\\nette-weather-api\\app\\Model\\WeatherFormatter.php',
@@ -30,7 +35,7 @@ return array (
     'App\\Presentation\\ApiPresenter' => 
     array (
       0 => 'C:\\xampp\\htdocs\\nette-weather-api\\app\\Presentation\\ApiPresenter.php',
-      1 => 1753102302,
+      1 => 1753106857,
     ),
     'App\\Presentation\\ApiResponse' => 
     array (
@@ -55,7 +60,7 @@ return array (
     'App\\Presentation\\HomePresenter' => 
     array (
       0 => 'C:\\xampp\\htdocs\\nette-weather-api\\app\\Presentation\\HomePresenter.php',
-      1 => 1753102861,
+      1 => 1753106909,
     ),
   ),
   1 => 

@@ -63,42 +63,46 @@
                                 </div>
                             {/foreach}
                         </div>
-                        <!-- Rate Limiting -->
-                        <div class="card mt-4">
-                            <div class="card-header">
-                                <h2 class="h4 mb-0">Rate Limiting</h2>
-                            </div>
-                            <div class="card-body">
-                                <p>This API implements rate limiting to ensure fair usage and protect the service from abuse.</p>
 
-                                <h4 class="h6">Limits</h4>
-                                <ul>
-                                    <li><strong>Requests:</strong> {$rateLimit['limit']} per {$rateLimit['window']}</li>
-                                    <li><strong>Identification:</strong> {$rateLimit['identification']}</li>
-                                </ul>
-
-                                <h4 class="h6">Rate Limit Headers</h4>
-                                <p>Each response includes headers with information about your rate limit status:</p>
-                                <ul>
-                                    {foreach $rateLimit['headers'] as $header => $description}
-                                        <li><code>{$header}</code>: {$description}</li>
-                                    {/foreach}
-                                </ul>
-
-                                <h4 class="h6">Exceeding the Rate Limit</h4>
-                                <p>If you exceed the rate limit, you will receive a <code>429 Too Many Requests</code> response with a message indicating when you can try again.</p>
-                                <pre class="bg-light p-3 rounded"><code>{
-                            "status": "error",
-                            "message": "Rate limit exceeded. Try again later."
-                        }</code></pre>
-                            </div>
-                        </div>
 
                         <h4 class="h6">Example Response</h4>
                         <pre class="bg-light p-3 rounded"><code>{json_encode($endpoint['response_example'], JSON_PRETTY_PRINT)}</code></pre>
                     </div>
                     {if !$iterator->isLast()}<hr>{/if}
                 {/foreach}
+            </div>
+        </div>
+
+        <!-- Rate Limiting -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h2 class="h4 mb-0">Rate Limiting</h2>
+            </div>
+            <div class="card-body">
+                <p>This API implements rate limiting to ensure fair usage and protect the service from abuse.</p>
+
+                <h4 class="h6">Limits</h4>
+                <ul>
+                    <li><strong>Requests:</strong> {$rateLimit['limit']} per {$rateLimit['window']}</li>
+                    <li><strong>Identification:</strong> {$rateLimit['identification']}</li>
+                </ul>
+
+                <h4 class="h6">Rate Limit Headers</h4>
+                <p>Each response includes headers with information about your rate limit status:</p>
+                <ul>
+                    {foreach $rateLimit['headers'] as $header => $description}
+                        <li><code>{$header}</code>: {$description}</li>
+                    {/foreach}
+                </ul>
+
+                <h4 class="h6">Exceeding the Rate Limit</h4>
+                <p>If you exceed the rate limit, you will receive a <code>429 Too Many Requests</code> response with a message indicating when you can try again.</p>
+                <pre class="bg-light p-3 rounded">
+                    <code>
+{
+    "status": "error",
+    "message": "Rate limit exceeded. Try again later."
+}</code></pre>
             </div>
         </div>
 

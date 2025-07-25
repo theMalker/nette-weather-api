@@ -32,7 +32,7 @@ final class Template_62702d23f3 extends Latte\Runtime\Template
 		extract($this->params);
 
 		if (!$this->getReferringTemplate() || $this->getReferenceType() === 'extends') {
-			foreach (array_intersect_key(['paramName' => '13, 47', 'paramInfo' => '13', 'value' => '20', 'desc' => '20', 'endpoint' => '36', 'paramDesc' => '47', 'exampleTitle' => '54', 'exampleUrl' => '54'], $this->params) as $ʟ_v => $ʟ_l) {
+			foreach (array_intersect_key(['paramName' => '13, 47', 'paramInfo' => '13', 'value' => '20', 'desc' => '20', 'endpoint' => '36', 'paramDesc' => '47', 'exampleTitle' => '54', 'exampleUrl' => '54', 'header' => '93', 'description' => '93'], $this->params) as $ʟ_v => $ʟ_l) {
 				trigger_error("Variable \$$ʟ_v overwritten in foreach on line $ʟ_l");
 			}
 		}
@@ -172,13 +172,14 @@ final class Template_62702d23f3 extends Latte\Runtime\Template
 
 			echo '                        </div>
 
+
                         <h4 class="h6">Example Response</h4>
                         <pre class="bg-light p-3 rounded"><code>';
-			echo LR\Filters::escapeHtmlText(json_encode($endpoint['response_example'], JSON_PRETTY_PRINT)) /* line 68 */;
+			echo LR\Filters::escapeHtmlText(json_encode($endpoint['response_example'], JSON_PRETTY_PRINT)) /* line 69 */;
 			echo '</code></pre>
                     </div>
 ';
-			if (!$iterator->isLast()) /* line 70 */ {
+			if (!$iterator->isLast()) /* line 71 */ {
 				echo '                    <hr>';
 			}
 			echo "\n";
@@ -187,6 +188,53 @@ final class Template_62702d23f3 extends Latte\Runtime\Template
 		$iterator = $ʟ_it = $ʟ_it->getParent();
 
 		echo '            </div>
+        </div>
+
+        <!-- Rate Limiting -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h2 class="h4 mb-0">Rate Limiting</h2>
+            </div>
+            <div class="card-body">
+                <p>This API implements rate limiting to ensure fair usage and protect the service from abuse.</p>
+
+                <h4 class="h6">Limits</h4>
+                <ul>
+                    <li><strong>Requests:</strong> ';
+		echo LR\Filters::escapeHtmlText($rateLimit['limit']) /* line 86 */;
+		echo ' per ';
+		echo LR\Filters::escapeHtmlText($rateLimit['window']) /* line 86 */;
+		echo '</li>
+                    <li><strong>Identification:</strong> ';
+		echo LR\Filters::escapeHtmlText($rateLimit['identification']) /* line 87 */;
+		echo '</li>
+                </ul>
+
+                <h4 class="h6">Rate Limit Headers</h4>
+                <p>Each response includes headers with information about your rate limit status:</p>
+                <ul>
+';
+		foreach ($rateLimit['headers'] as $header => $description) /* line 93 */ {
+			echo '                        <li><code>';
+			echo LR\Filters::escapeHtmlText($header) /* line 94 */;
+			echo '</code>: ';
+			echo LR\Filters::escapeHtmlText($description) /* line 94 */;
+			echo '</li>
+';
+
+		}
+
+		echo '                </ul>
+
+                <h4 class="h6">Exceeding the Rate Limit</h4>
+                <p>If you exceed the rate limit, you will receive a <code>429 Too Many Requests</code> response with a message indicating when you can try again.</p>
+                <pre class="bg-light p-3 rounded">
+                    <code>
+{
+    "status": "error",
+    "message": "Rate limit exceeded. Try again later."
+}</code></pre>
+            </div>
         </div>
 
         <!-- Response Format -->
@@ -211,13 +259,13 @@ final class Template_62702d23f3 extends Latte\Runtime\Template
 
         <footer class="mt-5 text-center text-muted">
             <p>Weather API Wrapper v';
-		echo LR\Filters::escapeHtmlText($apiInfo['version']) /* line 96 */;
+		echo LR\Filters::escapeHtmlText($apiInfo['version']) /* line 130 */;
 		echo ' - ';
-		echo LR\Filters::escapeHtmlText(date('Y')) /* line 96 */;
+		echo LR\Filters::escapeHtmlText(date('Y')) /* line 130 */;
 		echo '</p>
         </footer>
     </div>
-    
+
 ';
 	}
 }

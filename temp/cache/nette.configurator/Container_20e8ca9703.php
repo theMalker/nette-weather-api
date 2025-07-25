@@ -65,7 +65,8 @@ class Container_20e8ca9703 extends Nette\DI\Container
 		'Nette\Application\Routers\RouteList' => [['01']],
 		'App\Model\WeatherService' => [['02']],
 		'App\Model\WeatherFormatter' => [['03']],
-		'App\Presentation\ApiResponse' => [['04']],
+		'App\Model\RateLimiter' => [['04']],
+		'App\Presentation\ApiResponse' => [['05']],
 		'Nette\Application\UI\Presenter' => [2 => ['application.1', 'application.2', 'application.4']],
 		'Nette\Application\UI\Control' => [2 => ['application.1', 'application.2', 'application.4']],
 		'Nette\Application\UI\Component' => [2 => ['application.1', 'application.2', 'application.4']],
@@ -112,7 +113,13 @@ class Container_20e8ca9703 extends Nette\DI\Container
 	}
 
 
-	public function createService04(): App\Presentation\ApiResponse
+	public function createService04(): App\Model\RateLimiter
+	{
+		return new App\Model\RateLimiter($this->getService('cache.storage'));
+	}
+
+
+	public function createService05(): App\Presentation\ApiResponse
 	{
 		return new App\Presentation\ApiResponse;
 	}
@@ -120,7 +127,7 @@ class Container_20e8ca9703 extends Nette\DI\Container
 
 	public function createServiceApplication__1(): App\Presentation\ApiPresenter
 	{
-		$service = new App\Presentation\ApiPresenter($this->getService('02'), $this->getService('03'));
+		$service = new App\Presentation\ApiPresenter($this->getService('02'), $this->getService('03'), $this->getService('04'));
 		$service->injectPrimary(
 			$this->getService('http.request'),
 			$this->getService('http.response'),
@@ -130,7 +137,7 @@ class Container_20e8ca9703 extends Nette\DI\Container
 			$this->getService('security.user'),
 			$this->getService('latte.templateFactory'),
 		);
-		$service->injectApiResponse($this->getService('04'));
+		$service->injectApiResponse($this->getService('05'));
 		$service->invalidLinkMode = 5;
 		return $service;
 	}

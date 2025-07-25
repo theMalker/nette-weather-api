@@ -14,8 +14,8 @@ use Nette\Application\UI\Presenter;
 
 final class ApiPresenter extends Presenter
 {
-
     use ApiResponseTrait;
+    use ApiLoggerTrait;
 
     /**
      * Konstanty RateLimiteru
@@ -97,15 +97,29 @@ final class ApiPresenter extends Presenter
             // Formátování odpovědi
             $formattedData = $this->formatter->formatCurrentWeather($data);
 
+            // Log úspěšné odpovědi
+            $this->logApiRequest('current', [
+                'location' => $location,
+                'units' => $units,
+                'lang' => $lang
+            ]);
+
             // Odešle odpověd
             $this->apiResponse->sendSuccess($formattedData);
         } catch (\Exception $e) {
+            // logování chyby
+            $this->logApiError('current', [
+                'location' => $location,
+                'units' => $units,
+                'lang' => $lang
+            ], $e->getMessage());
+
             $this->apiResponse->sendError($e->getMessage());
         }
     }
 
 
-    public function actionForecast(string $location, int $days = 5): void
+    public function actionForecast(string $location, int $days = 5, string $units = 'metric', string $lang = 'en'): void
     {
         try {
             // zakladní validace vstupu
@@ -116,28 +130,43 @@ final class ApiPresenter extends Presenter
                 $this->apiResponse->sendError('Days must be between 1 and 7 days', 400);
             }
 
-            $data = $this->weatherService->getForecast($location, $days);
-            $this->apiResponse->sendSuccess($data);
+            // Validace jednotek
+            $validUnits = ['metric', 'us', 'uk'];
+            if (!in_array($units, $validUnits)) {
+                $this->apiResponse->sendError('Invalid units. Valid values: ' . implode(', ', $validUnits), 400);
+            }
+
+            // Seskupíme options pro API request
+            $options = [
+                'unitGroup' => $units,
+                'lang' => $lang,
+            ];
+
+            $data = $this->weatherService->getForecast($location, $days, $options);
+
+            // Formátování odpovědi
+            $formattedData = $this->formatter->formatForecast($data, $days);
+
+            // Logování úspěšného požadavku
+            $this->logApiRequest('forecast', [
+                'location' => $location,
+                'days' => $days,
+                'units' => $units,
+                'lang' => $lang
+            ]);
+
+            $this->apiResponse->sendSuccess($formattedData);
         } catch (\Exception $e) {
+            // Logování chyby
+            $this->logApiError('forecast', [
+                'location' => $location,
+                'days' => $days,
+                'units' => $units,
+                'lang' => $lang
+            ], $e->getMessage());
+
             $this->apiResponse->sendError($e->getMessage());
         }
-    }
-
-
-
-    /**
-     * Metoda pro zpracování dat z požadavku
-     *
-     * @return array
-     */
-    protected function getJsonInput(): array
-    {
-        $input = file_get_contents('php://input');
-        $decoded = json_decode($input, true);
-        if ($input && $decoded === null) {
-            $this->apiResponse->sendError('Invalid JSON format', 400);
-        }
-        return $decoded ?: [];
     }
 
     /**
