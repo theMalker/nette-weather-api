@@ -67,6 +67,7 @@ class Container_20e8ca9703 extends Nette\DI\Container
 		'App\Model\WeatherFormatter' => [['03']],
 		'App\Model\RateLimiter' => [['04']],
 		'App\Presentation\ApiResponse' => [['05']],
+		'App\Presentation\ApiLogger' => [['06']],
 		'Nette\Application\UI\Presenter' => [2 => ['application.1', 'application.2', 'application.4']],
 		'Nette\Application\UI\Control' => [2 => ['application.1', 'application.2', 'application.4']],
 		'Nette\Application\UI\Component' => [2 => ['application.1', 'application.2', 'application.4']],
@@ -125,6 +126,12 @@ class Container_20e8ca9703 extends Nette\DI\Container
 	}
 
 
+	public function createService06(): App\Presentation\ApiLogger
+	{
+		return new App\Presentation\ApiLogger('C:\xampp\htdocs\nette-weather-api/log');
+	}
+
+
 	public function createServiceApplication__1(): App\Presentation\ApiPresenter
 	{
 		$service = new App\Presentation\ApiPresenter($this->getService('02'), $this->getService('03'), $this->getService('04'));
@@ -138,6 +145,7 @@ class Container_20e8ca9703 extends Nette\DI\Container
 			$this->getService('latte.templateFactory'),
 		);
 		$service->injectApiResponse($this->getService('05'));
+		$service->injectApiLogger($this->getService('06'));
 		$service->invalidLinkMode = 5;
 		return $service;
 	}

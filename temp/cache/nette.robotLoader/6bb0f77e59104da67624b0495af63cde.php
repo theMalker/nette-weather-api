@@ -32,15 +32,25 @@ return array (
       0 => 'C:\\xampp\\htdocs\\nette-weather-api\\app\\Presentation\\Accessory\\LatteExtension.php',
       1 => 1750921300,
     ),
+    'App\\Presentation\\ApiLogger' => 
+    array (
+      0 => 'C:\\xampp\\htdocs\\nette-weather-api\\app\\Presentation\\ApiLogger.php',
+      1 => 1753447879,
+    ),
+    'App\\Presentation\\ApiLoggerTrait' => 
+    array (
+      0 => 'C:\\xampp\\htdocs\\nette-weather-api\\app\\Presentation\\ApiLoggerTrait.php',
+      1 => 1753443580,
+    ),
     'App\\Presentation\\ApiPresenter' => 
     array (
       0 => 'C:\\xampp\\htdocs\\nette-weather-api\\app\\Presentation\\ApiPresenter.php',
-      1 => 1753106857,
+      1 => 1753445384,
     ),
     'App\\Presentation\\ApiResponse' => 
     array (
       0 => 'C:\\xampp\\htdocs\\nette-weather-api\\app\\Presentation\\ApiResponse.php',
-      1 => 1753087847,
+      1 => 1753445267,
     ),
     'App\\Presentation\\ApiResponseTrait' => 
     array (

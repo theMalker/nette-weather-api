@@ -14,7 +14,7 @@ class ApiLogger
     public function __construct(string $logDir = null)
     {
         // pokud cesta není zadána, použij výchozí
-        $this->logDir = $logDir ?? __DIR__ . "/../../log";
+        $this->logDir = $logDir ?? __DIR__ . '/../../log';
 
         // Kontrola, že adresář existuje
         if (!is_dir($this->logDir)) {
