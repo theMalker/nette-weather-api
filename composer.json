@@ -1,9 +1,17 @@
 {
-	"name": "nette/web-project",
-	"description": "Nette: Standard Web Project",
-	"keywords": ["nette"],
+	"name": "themalker/nette-weather-api",
+	"description": "A PHP wrapper for the Visual Crossing Weather API built with Nette Framework",
+	"keywords": ["nette, api, weather, wrapper, php, logger, formatter"],
 	"type": "project",
-	"license": ["MIT", "BSD-3-Clause", "GPL-2.0-only", "GPL-3.0-only"],
+	"license": ["MIT"],
+	"authors": [
+		{
+			"name": "Marek Siwek",
+			"email": "eumalker@gmail.com",
+			"role": "Developer"
+		}
+	],
+	"homepage": "https://github.com/themalker/nette-weather-api",
 	"require": {
 		"php": ">= 8.1",
 		"nette/application": "^3.2.3",

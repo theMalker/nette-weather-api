@@ -82,6 +82,8 @@ return array (
     'App\\Presentation\\HomeDefaultTemplate' => 3,
     'App\\Presentation\\HomeTemplate' => 3,
     'App\\Presentation\\HomepagePresenter' => 2,
+    'App\\Presentation\\ApiDefaultTemplate' => 1,
+    'App\\Presentation\\ApiTemplate' => 1,
   ),
   2 => 
   array (

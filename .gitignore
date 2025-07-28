@@ -1,7 +1,9 @@
 # Nette
 vendor/
-temp/
-log/
+temp/*
+!temp/.gitkeep
+log/*
+!log/.gitkeep
 
 # Enviroment configurace
 .env
